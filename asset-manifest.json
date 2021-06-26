@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/y-gateball/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/y-gateball/static/js/main.a502cb51.chunk.js",
+    "main.js.map": "/y-gateball/static/js/main.a502cb51.chunk.js.map",
+    "runtime-main.js": "/y-gateball/static/js/runtime-main.acb98775.js",
+    "runtime-main.js.map": "/y-gateball/static/js/runtime-main.acb98775.js.map",
+    "static/js/2.f5cd1dfa.chunk.js": "/y-gateball/static/js/2.f5cd1dfa.chunk.js",
+    "static/js/2.f5cd1dfa.chunk.js.map": "/y-gateball/static/js/2.f5cd1dfa.chunk.js.map",
+    "static/js/3.0dcc63e4.chunk.js": "/y-gateball/static/js/3.0dcc63e4.chunk.js",
+    "static/js/3.0dcc63e4.chunk.js.map": "/y-gateball/static/js/3.0dcc63e4.chunk.js.map",
+    "index.html": "/y-gateball/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/y-gateball/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.f5cd1dfa.chunk.js.LICENSE.txt": "/y-gateball/static/js/2.f5cd1dfa.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/y-gateball/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.acb98775.js",
+    "static/js/2.f5cd1dfa.chunk.js",
+    "static/css/main.8c8b27cf.chunk.css",
+    "static/js/main.a502cb51.chunk.js"
+  ]
+}
