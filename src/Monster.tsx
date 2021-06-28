@@ -1,17 +1,16 @@
-import { useTable, Column } from 'react-table';
+import { Column } from 'react-table';
+import { Card, Table } from './Table';
 
 type Attribute = '闇' | '光' | '地' | '水' | '炎' | '風';
 type Type = 'ドラゴン' | '魔法使い' | 'アンデット' | '戦士' | '獣戦士' | '獣' | '鳥獣' | '悪魔' | '天使' | '昆虫' | '恐竜' | '爬虫類' | '魚' | '海竜' | '機械' | '雷' | '水' | '炎' | '岩石' | '植物';
 
-interface Monster {
-  name: string;
+interface Monster extends Card {
   lv: number;
   attribute: Attribute;
   type: Type;
   atk: number;
   def: number;
-  num: number;
-}
+};
 
 const data: Monster[] = [
   {
@@ -192,59 +191,9 @@ const columns: Column<Monster>[] = [
 ];
 
 const MonsterTable = () => {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data });
-
   return (
-    <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
-      <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th
-                {...column.getHeaderProps()}
-                style={{
-                  borderBottom: 'solid 3px red',
-                  background: 'aliceblue',
-                  color: 'black',
-                  fontWeight: 'bold',
-                }}
-              >
-                {column.render('Header')}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
-                    style={{
-                      padding: '10px',
-                      border: 'solid 1px gray',
-                      background: 'papayawhip',
-                    }}
-                  >
-                    {cell.render('Cell')}
-                  </td>
-                )
-              })}
-            </tr>
-          )
-        })}
-      </tbody>
-    </table>);
+    <Table columns={columns} data={data} />
+  );
 }
 
 export default MonsterTable;
