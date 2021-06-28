@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/y-gateball/static/css/main.8c8b27cf.chunk.css",
-    "main.js": "/y-gateball/static/js/main.43235103.chunk.js",
-    "main.js.map": "/y-gateball/static/js/main.43235103.chunk.js.map",
+    "main.js": "/y-gateball/static/js/main.bcfd7853.chunk.js",
+    "main.js.map": "/y-gateball/static/js/main.bcfd7853.chunk.js.map",
     "runtime-main.js": "/y-gateball/static/js/runtime-main.d22a844b.js",
     "runtime-main.js.map": "/y-gateball/static/js/runtime-main.d22a844b.js.map",
     "static/js/2.6b967ae3.chunk.js": "/y-gateball/static/js/2.6b967ae3.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.d22a844b.js",
     "static/js/2.6b967ae3.chunk.js",
     "static/css/main.8c8b27cf.chunk.css",
-    "static/js/main.43235103.chunk.js"
+    "static/js/main.bcfd7853.chunk.js"
   ]
 }
