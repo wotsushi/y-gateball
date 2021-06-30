@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import MonsterTable from './Monster';
 import SpellTable from './Spell';
+import TrapTable from './Trap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Nav className="mr-auto">
               <Nav.Link href="/monster">モンスター</Nav.Link>
               <Nav.Link href="/spell">魔法</Nav.Link>
+              <Nav.Link href="/trap">罠</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -25,6 +27,9 @@ function App() {
           </Route>
           <Route path="/spell">
             <SpellTable />
+          </Route>
+          <Route path="/trap">
+            <TrapTable />
           </Route>
         </Switch>
       </div>
