@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/y-gateball/static/css/main.8c8b27cf.chunk.css",
-    "main.js": "/y-gateball/static/js/main.75a9608f.chunk.js",
-    "main.js.map": "/y-gateball/static/js/main.75a9608f.chunk.js.map",
+    "main.js": "/y-gateball/static/js/main.62c90f80.chunk.js",
+    "main.js.map": "/y-gateball/static/js/main.62c90f80.chunk.js.map",
     "runtime-main.js": "/y-gateball/static/js/runtime-main.b6ab1c1a.js",
     "runtime-main.js.map": "/y-gateball/static/js/runtime-main.b6ab1c1a.js.map",
     "static/css/2.150d169a.chunk.css": "/y-gateball/static/css/2.150d169a.chunk.css",
-    "static/js/2.1931b524.chunk.js": "/y-gateball/static/js/2.1931b524.chunk.js",
-    "static/js/2.1931b524.chunk.js.map": "/y-gateball/static/js/2.1931b524.chunk.js.map",
+    "static/js/2.c3ff8453.chunk.js": "/y-gateball/static/js/2.c3ff8453.chunk.js",
+    "static/js/2.c3ff8453.chunk.js.map": "/y-gateball/static/js/2.c3ff8453.chunk.js.map",
     "static/js/3.5e419aef.chunk.js": "/y-gateball/static/js/3.5e419aef.chunk.js",
     "static/js/3.5e419aef.chunk.js.map": "/y-gateball/static/js/3.5e419aef.chunk.js.map",
     "index.html": "/y-gateball/index.html",
     "static/css/2.150d169a.chunk.css.map": "/y-gateball/static/css/2.150d169a.chunk.css.map",
     "static/css/main.8c8b27cf.chunk.css.map": "/y-gateball/static/css/main.8c8b27cf.chunk.css.map",
-    "static/js/2.1931b524.chunk.js.LICENSE.txt": "/y-gateball/static/js/2.1931b524.chunk.js.LICENSE.txt"
+    "static/js/2.c3ff8453.chunk.js.LICENSE.txt": "/y-gateball/static/js/2.c3ff8453.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b6ab1c1a.js",
     "static/css/2.150d169a.chunk.css",
-    "static/js/2.1931b524.chunk.js",
+    "static/js/2.c3ff8453.chunk.js",
     "static/css/main.8c8b27cf.chunk.css",
-    "static/js/main.75a9608f.chunk.js"
+    "static/js/main.62c90f80.chunk.js"
   ]
 }
