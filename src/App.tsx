@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import MonsterTable from './Monster';
 import SpellTable from './Spell';
@@ -7,17 +7,18 @@ import TrapTable from './Trap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  const base = process.env.PUBLIC_URL;
   return (
-    <Router>
+    <Router basename={base}>
       <div className="App">
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/">04環境</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">04環境</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/monster">モンスター</Nav.Link>
-              <Nav.Link href="/spell">魔法</Nav.Link>
-              <Nav.Link href="/trap">罠</Nav.Link>
+              <Nav.Link as={Link} to="/monster">モンスター</Nav.Link>
+              <Nav.Link as={Link} to="/spell">魔法</Nav.Link>
+              <Nav.Link as={Link} to="/trap">罠</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
