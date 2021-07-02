@@ -1,5 +1,5 @@
 import { Column } from 'react-table';
-import { Card, Table } from './Table';
+import { Card, Table, LinkName } from './Table';
 
 type Type = '通常' | '永続' | 'カウンター';
 
@@ -43,7 +43,7 @@ const data: Trap[] = [
 const columns: Column<Trap>[] = [
   {
     Header: 'カード名',
-    accessor: 'name'
+    accessor: LinkName
   },
   {
     Header: '種類',

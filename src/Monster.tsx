@@ -1,5 +1,5 @@
 import { Column } from 'react-table';
-import { Card, Table } from './Table';
+import { Card, Table, LinkName } from './Table';
 
 type Attribute = '闇' | '光' | '地' | '水' | '炎' | '風';
 type Type = 'ドラゴン' | '魔法使い' | 'アンデット' | '戦士' | '獣戦士' | '獣' | '鳥獣' | '悪魔' | '天使' | '昆虫' | '恐竜' | '爬虫類' | '魚' | '海竜' | '機械' | '雷' | '水' | '炎' | '岩石' | '植物';
@@ -162,7 +162,7 @@ const data: Monster[] = [
 const columns: Column<Monster>[] = [
   {
     Header: 'カード名',
-    accessor: 'name'
+    accessor: LinkName,
   },
   {
     Header: 'レベル',

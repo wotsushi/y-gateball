@@ -1,5 +1,5 @@
 import { Column } from 'react-table';
-import { Card, Table } from './Table';
+import { Card, Table, LinkName } from './Table';
 
 type Type = '通常' | '儀式' | '永続' | '装備' | 'フィールド' | '速攻';
 
@@ -83,7 +83,7 @@ const data: Spell[] = [
 const columns: Column<Spell>[] = [
   {
     Header: 'カード名',
-    accessor: 'name'
+    accessor: LinkName
   },
   {
     Header: '種類',
