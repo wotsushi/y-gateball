@@ -4,6 +4,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 import MonsterTable from './Monster';
 import SpellTable from './Spell';
 import TrapTable from './Trap';
+import Rule from './Rule';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
               <Nav.Link as={Link} to="/monster">モンスター</Nav.Link>
               <Nav.Link as={Link} to="/spell">魔法</Nav.Link>
               <Nav.Link as={Link} to="/trap">罠</Nav.Link>
+              <Nav.Link as={Link} to="/rule">ルール</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -31,6 +33,9 @@ function App() {
           </Route>
           <Route path="/trap">
             <TrapTable />
+          </Route>
+          <Route path="/rule">
+            <Rule />
           </Route>
         </Switch>
       </div>
