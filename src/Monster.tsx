@@ -1,15 +1,17 @@
-import { Column } from 'react-table';
-import { Card, Table, LinkName } from './Table';
+import BootstrapTable from 'react-bootstrap-table-next';
+import { linkName } from './common';
 
 type Attribute = '闇' | '光' | '地' | '水' | '炎' | '風';
 type Type = 'ドラゴン' | '魔法使い' | 'アンデット' | '戦士' | '獣戦士' | '獣' | '鳥獣' | '悪魔' | '天使' | '昆虫' | '恐竜' | '爬虫類' | '魚' | '海竜' | '機械' | '雷' | '水' | '炎' | '岩石' | '植物';
 
-interface Monster extends Card {
+interface Monster {
+  name: string;
   lv: number;
   attribute: Attribute;
   type: Type;
   atk: number;
   def: number;
+  num: number;
 };
 
 const data: Monster[] = [
@@ -159,41 +161,38 @@ const data: Monster[] = [
   },
 ];
 
-const columns: Column<Monster>[] = [
+const columns = [
   {
-    Header: 'カード名',
-    accessor: LinkName,
+    text: 'カード名',
+    dataField: 'name',
+    formatter: linkName
   },
   {
-    Header: 'レベル',
-    accessor: 'lv'
+    text: 'レベル',
+    dataField: 'lv'
   },
   {
-    Header: '属性',
-    accessor: 'attribute'
+    text: '属性',
+    dataField: 'attribute'
   },
   {
-    Header: '種族',
-    accessor: 'type'
+    text: '種族',
+    dataField: 'type'
   },
   {
-    Header: '攻撃力',
-    accessor: 'atk'
+    text: '攻撃力',
+    dataField: 'atk'
   },
   {
-    Header: '守備力',
-    accessor: 'def'
+    text: '守備力',
+    dataField: 'def'
   },
   {
-    Header: '枚数',
-    accessor: 'num'
+    text: '枚数',
+    dataField: 'num'
   },
 ];
 
-const MonsterTable = () => {
-  return (
-    <Table columns={columns} data={data} />
-  );
-}
+const MonsterTable = () => <BootstrapTable bootstrap4 keyField="name" data={data} columns={columns}></BootstrapTable>;
 
 export default MonsterTable;

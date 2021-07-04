@@ -1,10 +1,12 @@
-import { Column } from 'react-table';
-import { Card, Table, LinkName } from './Table';
+import BootstrapTable from 'react-bootstrap-table-next';
+import { linkName } from './common';
 
 type Type = '通常' | '永続' | 'カウンター';
 
-interface Trap extends Card {
+interface Trap {
+  name: string;
   type: Type;
+  num: number;
 };
 
 const data: Trap[] = [
@@ -40,25 +42,22 @@ const data: Trap[] = [
   },
 ];
 
-const columns: Column<Trap>[] = [
+const columns = [
   {
-    Header: 'カード名',
-    accessor: LinkName
+    text: 'カード名',
+    dataField: 'name',
+    formatter: linkName
   },
   {
-    Header: '種類',
-    accessor: 'type'
+    text: '種類',
+    dataField: 'type'
   },
   {
-    Header: '枚数',
-    accessor: 'num'
+    text: '枚数',
+    dataField: 'num'
   },
 ];
 
-const TrapTable = () => {
-  return (
-    <Table columns={columns} data={data} />
-  );
-}
+const TrapTable = () => <BootstrapTable bootstrap4 keyField="name" data={data} columns={columns}></BootstrapTable>;
 
 export default TrapTable;
