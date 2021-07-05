@@ -30,6 +30,7 @@ interface Monster {
   attribute: Attribute;
   type: Type;
   atk: number;
+  effect_atk?: number;
   def: number;
   num: number;
 }
@@ -68,6 +69,7 @@ const data: Monster[] = [
     attribute: "闇",
     type: "獣戦士",
     atk: 1800,
+    effect_atk: 1400,
     def: 1900,
     num: 1,
   },
@@ -86,6 +88,7 @@ const data: Monster[] = [
     attribute: "闇",
     type: "魔法使い",
     atk: 1600,
+    effect_atk: 1900,
     def: 1000,
     num: 1,
   },
@@ -104,6 +107,7 @@ const data: Monster[] = [
     attribute: "光",
     type: "戦士",
     atk: 1600,
+    effect_atk: 2000,
     def: 1000,
     num: 1,
   },
@@ -149,6 +153,7 @@ const data: Monster[] = [
     attribute: "地",
     type: "魔法使い",
     atk: 400,
+    effect_atk: 3400,
     def: 1500,
     num: 1,
   },
@@ -181,6 +186,9 @@ const data: Monster[] = [
   },
 ];
 
+const formatEffectATK = (effect_atk: number | undefined, monster: Monster) =>
+  effect_atk === undefined ? monster.atk : effect_atk;
+
 const columns = [
   {
     text: "カード名",
@@ -202,6 +210,11 @@ const columns = [
   {
     text: "攻撃力",
     dataField: "atk",
+  },
+  {
+    text: "効果攻撃力",
+    dataField: "effect_atk",
+    formatter: formatEffectATK,
   },
   {
     text: "守備力",
