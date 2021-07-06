@@ -186,7 +186,7 @@ const data: Monster[] = [
   },
 ];
 
-const formatEffectATK = (effect_atk: number | undefined, monster: Monster) =>
+const effectATK = (effect_atk: number | undefined, monster: Monster) =>
   effect_atk === undefined ? monster.atk : effect_atk;
 
 const columns = [
@@ -198,31 +198,39 @@ const columns = [
   {
     text: "レベル",
     dataField: "lv",
+    sort: true,
   },
   {
     text: "属性",
     dataField: "attribute",
+    sort: true,
   },
   {
     text: "種族",
     dataField: "type",
+    sort: true,
   },
   {
     text: "攻撃力",
     dataField: "atk",
+    sort: true,
   },
   {
     text: "効果攻撃力",
     dataField: "effect_atk",
-    formatter: formatEffectATK,
+    formatter: effectATK,
+    sort: true,
+    sortValue: effectATK,
   },
   {
     text: "守備力",
     dataField: "def",
+    sort: true,
   },
   {
     text: "枚数",
     dataField: "num",
+    sort: true,
   },
 ];
 
@@ -232,6 +240,7 @@ const MonsterTable = () => (
     keyField="name"
     data={data}
     columns={columns}
+    defaultSorted={[{ dataField: "atk", order: "desc" }]}
   ></BootstrapTable>
 );
 
