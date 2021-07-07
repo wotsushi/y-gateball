@@ -1,26 +1,36 @@
-import './App.css';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { Navbar, Nav } from 'react-bootstrap';
-import MonsterTable from './Monster';
-import SpellTable from './Spell';
-import TrapTable from './Trap';
-import Rule from './Rule';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Navbar, Nav } from "react-bootstrap";
+import MonsterTable from "./Monster";
+import SpellTable from "./Spell";
+import TrapTable from "./Trap";
+import Rule from "./Rule";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const base = process.env.PUBLIC_URL;
   return (
     <Router basename={base}>
       <div className="App">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand as={Link} to="/">04環境</Navbar.Brand>
+        <Navbar bg="light" expand>
+          <Navbar.Brand as={Link} to="/">
+            04環境
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link as={Link} to="/monster">モンスター</Nav.Link>
-              <Nav.Link as={Link} to="/spell">魔法</Nav.Link>
-              <Nav.Link as={Link} to="/trap">罠</Nav.Link>
-              <Nav.Link as={Link} to="/rule">ルール</Nav.Link>
+              <Nav.Link as={Link} to="/monster">
+                モンスター
+              </Nav.Link>
+              <Nav.Link as={Link} to="/spell">
+                魔法
+              </Nav.Link>
+              <Nav.Link as={Link} to="/trap">
+                罠
+              </Nav.Link>
+              <Nav.Link as={Link} to="/rule">
+                ルール
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
