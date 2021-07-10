@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
+import LP from "./LP";
 import MonsterTable from "./Monster";
 import SpellTable from "./Spell";
 import TrapTable from "./Trap";
@@ -35,6 +36,9 @@ function App() {
           </Navbar.Collapse>
         </Navbar>
         <Switch>
+          <Route path="/" exact>
+            <LP />
+          </Route>
           <Route path="/monster">
             <MonsterTable />
           </Route>
