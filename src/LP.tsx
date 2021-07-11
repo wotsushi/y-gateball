@@ -1,4 +1,5 @@
 import { Button, Container, Col, Row, ProgressBar } from "react-bootstrap";
+import react from "react";
 
 const toStringWithSign = (x: number) => {
   if (x > 0) {
@@ -13,6 +14,9 @@ const lifeValues = [
   [-600, -800, -1000],
   [-2000, -3000, 1000],
 ];
+interface Player {
+  lp: number;
+}
 
 const LifePoint = (props: { lp: number }) => {
   const { lp } = props;
@@ -35,7 +39,7 @@ const LifePoint = (props: { lp: number }) => {
   );
 };
 
-const ControlPanel = () => {
+const ControlPanel = (props: { addLP: (lp: number) => void }) => {
   return (
     <Container>
       {lifeValues.map((row) => {
@@ -47,6 +51,7 @@ const ControlPanel = () => {
                   <Button
                     variant="outline-dark"
                     style={{ width: "100px", height: "50px" }}
+                    onClick={() => props.addLP(val)}
                   >
                     {toStringWithSign(val)}
                   </Button>
@@ -61,12 +66,14 @@ const ControlPanel = () => {
 };
 
 const LP = () => {
+  const [playerA, setPlayerA] = react.useState({ lp: 8000 } as Player);
+  const [playerB, setPlayerB] = react.useState({ lp: 8000 } as Player);
   return (
     <Container>
       <Row>
         <Col>
           <div className="player">
-            <LifePoint lp={8000}></LifePoint>
+            <LifePoint lp={playerA.lp}></LifePoint>
             <div>先攻</div>
           </div>
         </Col>
@@ -74,16 +81,24 @@ const LP = () => {
         <Col>
           <div className="player">
             <div>後攻</div>
-            <LifePoint lp={3000}></LifePoint>
+            <LifePoint lp={playerB.lp}></LifePoint>
           </div>
         </Col>
       </Row>
       <Row>
         <Col>
-          <ControlPanel></ControlPanel>
+          <ControlPanel
+            addLP={(lp: number) =>
+              setPlayerA({ ...playerA, lp: Math.max(0, playerA.lp + lp) })
+            }
+          ></ControlPanel>
         </Col>
         <Col>
-          <ControlPanel></ControlPanel>
+          <ControlPanel
+            addLP={(lp: number) =>
+              setPlayerB({ ...playerB, lp: Math.max(0, playerB.lp + lp) })
+            }
+          ></ControlPanel>
         </Col>
       </Row>
     </Container>
