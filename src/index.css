@@ -42,3 +42,22 @@ th .caret-4-desc:before {
 th .caret-4-desc:after {
   content: "\2193";
 }
+
+.player {
+  display: flex;
+}
+
+.lp-parent {
+  padding: 10px;
+  width: 180px;
+  margin-top: 10px;
+}
+
+.lp-header {
+  font-size: 24px;
+}
+
+.lp {
+  font-size: 30px;
+  text-align: right;
+}
