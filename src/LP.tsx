@@ -1,4 +1,11 @@
-import { Button, Container, Col, Row, ProgressBar } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Col,
+  Row,
+  ProgressBar,
+  Modal,
+} from "react-bootstrap";
 import react from "react";
 
 const toStringWithSign = (x: number) => {
@@ -14,9 +21,20 @@ const lifeValues = [
   [-600, -800, -1000],
   [-2000, -3000, 1000],
 ];
+type Turn = "先攻" | "後攻";
 interface Player {
   lp: number;
+  turn: Turn;
 }
+const initPlayers = () => {
+  const turns = Math.random() > 0.5 ? ["先攻", "後攻"] : ["後攻", "先攻"];
+  return turns.map((turn) => {
+    return {
+      lp: 8000,
+      turn: turn,
+    } as Player;
+  });
+};
 
 const LifePoint = (props: { lp: number }) => {
   const { lp } = props;
@@ -66,42 +84,71 @@ const ControlPanel = (props: { addLP: (lp: number) => void }) => {
 };
 
 const LP = () => {
-  const [playerA, setPlayerA] = react.useState({ lp: 8000 } as Player);
-  const [playerB, setPlayerB] = react.useState({ lp: 8000 } as Player);
+  const [showModal, setShowModal] = react.useState(false);
+  const players = initPlayers();
+  const [playerA, setPlayerA] = react.useState(players[0]);
+  const [playerB, setPlayerB] = react.useState(players[1]);
+
+  const newGame = () => {
+    const newPlayers = initPlayers();
+    setPlayerA(newPlayers[0]);
+    setPlayerB(newPlayers[1]);
+    setShowModal(false);
+  };
+
   return (
-    <Container>
-      <Row>
-        <Col>
-          <div className="player">
-            <LifePoint lp={playerA.lp}></LifePoint>
-            <div>先攻</div>
-          </div>
-        </Col>
-        <Col>[New] [←] [→] [履歴]</Col>
-        <Col>
-          <div className="player">
-            <div>後攻</div>
-            <LifePoint lp={playerB.lp}></LifePoint>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <ControlPanel
-            addLP={(lp: number) =>
-              setPlayerA({ ...playerA, lp: Math.max(0, playerA.lp + lp) })
-            }
-          ></ControlPanel>
-        </Col>
-        <Col>
-          <ControlPanel
-            addLP={(lp: number) =>
-              setPlayerB({ ...playerB, lp: Math.max(0, playerB.lp + lp) })
-            }
-          ></ControlPanel>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container>
+        <Row>
+          <Col>
+            <div className="player">
+              <LifePoint lp={playerA.lp}></LifePoint>
+              <div>{playerA.turn}</div>
+            </div>
+          </Col>
+          <Col>
+            <Button onClick={() => setShowModal(true)}>New</Button>
+          </Col>
+          <Col>[←] [→] [履歴]</Col>
+          <Col>
+            <div className="player">
+              <div>{playerB.turn}</div>
+              <LifePoint lp={playerB.lp}></LifePoint>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <ControlPanel
+              addLP={(lp: number) =>
+                setPlayerA({ ...playerA, lp: Math.max(0, playerA.lp + lp) })
+              }
+            ></ControlPanel>
+          </Col>
+          <Col>
+            <ControlPanel
+              addLP={(lp: number) =>
+                setPlayerB({ ...playerB, lp: Math.max(0, playerB.lp + lp) })
+              }
+            ></ControlPanel>
+          </Col>
+        </Row>
+      </Container>
+      <Modal show={showModal}>
+        <Modal.Header>New Game?</Modal.Header>
+        <Modal.Body>
+          新しいゲームを開始してよろしいですか？
+          <br />
+          現在のゲームは終了されます。
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => newGame()}>はい</Button>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            いいえ
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
