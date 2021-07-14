@@ -7,6 +7,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import react from "react";
+import { createGlobalState } from "react-hooks-global-state";
 
 const toStringWithSign = (x: number) => {
   if (x > 0) {
@@ -83,11 +84,16 @@ const ControlPanel = (props: { addLP: (lp: number) => void }) => {
   );
 };
 
+const players = initPlayers();
+const { useGlobalState } = createGlobalState({
+  playerA: players[0],
+  playerB: players[1],
+});
+
 const LP = () => {
   const [showModal, setShowModal] = react.useState(false);
-  const players = initPlayers();
-  const [playerA, setPlayerA] = react.useState(players[0]);
-  const [playerB, setPlayerB] = react.useState(players[1]);
+  const [playerA, setPlayerA] = useGlobalState("playerA");
+  const [playerB, setPlayerB] = useGlobalState("playerB");
 
   const newGame = () => {
     const newPlayers = initPlayers();
@@ -120,9 +126,9 @@ const LP = () => {
         <Row>
           <Col>
             <ControlPanel
-              addLP={(lp: number) =>
-                setPlayerA({ ...playerA, lp: Math.max(0, playerA.lp + lp) })
-              }
+              addLP={(lp: number) => {
+                setPlayerA({ ...playerA, lp: Math.max(0, playerA.lp + lp) });
+              }}
             ></ControlPanel>
           </Col>
           <Col>
