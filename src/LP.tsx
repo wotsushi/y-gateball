@@ -5,6 +5,7 @@ import {
   Row,
   ProgressBar,
   Modal,
+  ListGroup,
 } from "react-bootstrap";
 import react from "react";
 import { createGlobalState } from "react-hooks-global-state";
@@ -16,6 +17,16 @@ const toStringWithSign = (x: number) => {
     return x.toString();
   }
 };
+
+const formatTime = (ms: number) => {
+  const s = Math.floor(ms / 1000);
+  if (s < 60) {
+    return `${s}秒`;
+  }
+  const m = Math.floor(s / 60);
+  return `${m}分`;
+};
+
 const lifeValues = [
   [-50, -100, -200],
   [-300, -400, -500],
@@ -27,6 +38,15 @@ interface Player {
   lp: number;
   turn: Turn;
 }
+interface LPLog {
+  time: number;
+  name: string;
+  from: number;
+  to: number;
+}
+
+type History = LPLog[];
+
 const initPlayers = () => {
   const turns = Math.random() > 0.5 ? ["先攻", "後攻"] : ["後攻", "先攻"];
   return turns.map((turn) => {
@@ -37,8 +57,8 @@ const initPlayers = () => {
   });
 };
 
-const LifePoint = (props: { lp: number }) => {
-  const { lp } = props;
+const LifePoint = (props: { name: string; lp: number }) => {
+  const { name, lp } = props;
   const now = Math.floor(lp / 80);
   const variant = (() => {
     if (lp > 4000) {
@@ -51,7 +71,7 @@ const LifePoint = (props: { lp: number }) => {
   })();
   return (
     <div className="lp-parent bg-light text-black">
-      <div className="lp-header">LP</div>
+      <div className="lp-header">{name}</div>
       <ProgressBar variant={variant} now={now}></ProgressBar>
       <div className="lp">{props.lp}</div>
     </div>
@@ -88,19 +108,94 @@ const players = initPlayers();
 const { useGlobalState } = createGlobalState({
   playerA: players[0],
   playerB: players[1],
+  history: [] as History,
 });
 
-const LP = () => {
+const useNewGameModal = (
+  newGame: () => void
+): [() => JSX.Element, () => void] => {
   const [showModal, setShowModal] = react.useState(false);
+  const NewGameModal = () => (
+    <Modal show={showModal}>
+      <Modal.Header>New Game?</Modal.Header>
+      <Modal.Body>
+        新しいゲームを開始してよろしいですか？
+        <br />
+        現在のゲームは終了されます。
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          onClick={() => {
+            newGame();
+            setShowModal(false);
+          }}
+        >
+          はい
+        </Button>
+        <Button variant="secondary" onClick={() => setShowModal(false)}>
+          いいえ
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+  const showNewGameModal = () => setShowModal(true);
+  return [NewGameModal, showNewGameModal];
+};
+
+const useHistoryModal = (): [
+  (props: { history: History }) => JSX.Element,
+  () => void
+] => {
+  const [showModal, setShowModal] = react.useState(false);
+  const HistoryModal = (props: { history: History }) => {
+    const { history } = props;
+    const now = Date.now();
+    return (
+      <Modal show={showModal}>
+        <Modal.Header>ライフポイント変動ログ</Modal.Header>
+        <Modal.Body>
+          <ListGroup>
+            {history
+              .map(({ time, name, from, to }) => {
+                return (
+                  <ListGroup.Item>
+                    {formatTime(now - time)}前: {name} {from} → {to} (
+                    {toStringWithSign(to - from)})
+                  </ListGroup.Item>
+                );
+              })
+              .reverse()
+              .slice(0, 10)}
+          </ListGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={() => {
+              setShowModal(false);
+            }}
+          >
+            閉じる
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  };
+  const showHistoryModal = () => setShowModal(true);
+  return [HistoryModal, showHistoryModal];
+};
+
+const LP = () => {
   const [playerA, setPlayerA] = useGlobalState("playerA");
   const [playerB, setPlayerB] = useGlobalState("playerB");
-
+  const [history, setHistory] = useGlobalState("history");
   const newGame = () => {
     const newPlayers = initPlayers();
     setPlayerA(newPlayers[0]);
     setPlayerB(newPlayers[1]);
-    setShowModal(false);
+    setHistory([]);
   };
+  const [NewGameModal, showNewGameModal] = useNewGameModal(newGame);
+  const [HistoryModal, showHistoryModal] = useHistoryModal();
 
   return (
     <>
@@ -108,18 +203,20 @@ const LP = () => {
         <Row>
           <Col>
             <div className="player">
-              <LifePoint lp={playerA.lp}></LifePoint>
+              <LifePoint name="西" lp={playerA.lp}></LifePoint>
               <div>{playerA.turn}</div>
             </div>
           </Col>
           <Col>
-            <Button onClick={() => setShowModal(true)}>New</Button>
+            <Button onClick={showNewGameModal}>New</Button>
           </Col>
-          <Col>[←] [→] [履歴]</Col>
+          <Col>
+            [←] [→] <Button onClick={showHistoryModal}>ログ</Button>
+          </Col>
           <Col>
             <div className="player">
               <div>{playerB.turn}</div>
-              <LifePoint lp={playerB.lp}></LifePoint>
+              <LifePoint name="東" lp={playerB.lp}></LifePoint>
             </div>
           </Col>
         </Row>
@@ -127,33 +224,36 @@ const LP = () => {
           <Col>
             <ControlPanel
               addLP={(lp: number) => {
-                setPlayerA({ ...playerA, lp: Math.max(0, playerA.lp + lp) });
+                const to = Math.max(0, playerA.lp + lp);
+                setHistory([
+                  ...history,
+                  {
+                    time: Date.now(),
+                    name: "西",
+                    from: playerA.lp,
+                    to,
+                  },
+                ]);
+                setPlayerA({ ...playerA, lp: to });
               }}
             ></ControlPanel>
           </Col>
           <Col>
             <ControlPanel
-              addLP={(lp: number) =>
-                setPlayerB({ ...playerB, lp: Math.max(0, playerB.lp + lp) })
-              }
+              addLP={(lp: number) => {
+                const to = Math.max(0, playerB.lp + lp);
+                setHistory([
+                  ...history,
+                  { time: Date.now(), name: "東", from: playerB.lp, to },
+                ]);
+                setPlayerB({ ...playerB, lp: to });
+              }}
             ></ControlPanel>
           </Col>
         </Row>
       </Container>
-      <Modal show={showModal}>
-        <Modal.Header>New Game?</Modal.Header>
-        <Modal.Body>
-          新しいゲームを開始してよろしいですか？
-          <br />
-          現在のゲームは終了されます。
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => newGame()}>はい</Button>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            いいえ
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <NewGameModal />
+      <HistoryModal history={history} />
     </>
   );
 };
