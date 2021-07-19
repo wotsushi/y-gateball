@@ -45,7 +45,10 @@ interface LPLog {
   to: number;
 }
 
-type History = LPLog[];
+interface History {
+  logs: LPLog[];
+  head: number;
+}
 
 const initPlayers = () => {
   const turns = Math.random() > 0.5 ? ["先攻", "後攻"] : ["後攻", "先攻"];
@@ -108,7 +111,10 @@ const players = initPlayers();
 const { useGlobalState } = createGlobalState({
   playerA: players[0],
   playerB: players[1],
-  history: [] as History,
+  history: {
+    logs: [],
+    head: -1,
+  } as History,
 });
 
 const useNewGameModal = (
@@ -149,24 +155,39 @@ const useHistoryModal = (): [
   const [showModal, setShowModal] = react.useState(false);
   const HistoryModal = (props: { history: History }) => {
     const { history } = props;
+    const head = history.head;
     const now = Date.now();
+    const logs = history.logs.map(({ time, name, from, to }, i) => {
+      return (
+        <ListGroup.Item variant={i === head ? "dark" : ""}>
+          {formatTime(now - time)}前: {name} {from} → {to} (
+          {toStringWithSign(to - from)})
+        </ListGroup.Item>
+      );
+    });
+    const visibleLogs = (() => {
+      const len = history.logs.length;
+      // HEADより前のログの数
+      const front = head;
+      // HEADより後のログの数
+      const rear = len - head - 1;
+
+      if (front <= 5) {
+        // 前が少ないので前から10個返すだけ
+        return logs.slice(0, 10);
+      }
+      if (rear <= 4) {
+        // 後ろが少ないので、後ろから10個返すだけ
+        return logs.slice(Math.max(0, len - 10));
+      }
+      // 前も後ろも十分にログがある場合はHEADを中心に10個のログを返す
+      return logs.slice(head - 5, head + 5);
+    })().reverse();
     return (
       <Modal show={showModal}>
         <Modal.Header>ライフポイント変動ログ</Modal.Header>
         <Modal.Body>
-          <ListGroup>
-            {history
-              .map(({ time, name, from, to }) => {
-                return (
-                  <ListGroup.Item>
-                    {formatTime(now - time)}前: {name} {from} → {to} (
-                    {toStringWithSign(to - from)})
-                  </ListGroup.Item>
-                );
-              })
-              .reverse()
-              .slice(0, 10)}
-          </ListGroup>
+          <ListGroup>{visibleLogs}</ListGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -192,7 +213,19 @@ const LP = () => {
     const newPlayers = initPlayers();
     setPlayerA(newPlayers[0]);
     setPlayerB(newPlayers[1]);
-    setHistory([]);
+    setHistory({ logs: [], head: -1 });
+  };
+  const undo = () => {
+    if (history.head < 0) {
+      return;
+    }
+    const log = history.logs[history.head];
+    if (log.name === "西") {
+      setPlayerA({ ...playerA, lp: log.from });
+    } else {
+      setPlayerB({ ...playerB, lp: log.from });
+    }
+    setHistory({ ...history, head: history.head - 1 });
   };
   const [NewGameModal, showNewGameModal] = useNewGameModal(newGame);
   const [HistoryModal, showHistoryModal] = useHistoryModal();
@@ -208,10 +241,11 @@ const LP = () => {
             </div>
           </Col>
           <Col>
-            <Button onClick={showNewGameModal}>New</Button>
-          </Col>
-          <Col>
-            [←] [→] <Button onClick={showHistoryModal}>ログ</Button>
+            <Button onClick={showNewGameModal}>New</Button>{" "}
+            <Button onClick={undo} disabled={history.head < 0}>
+              Undo
+            </Button>
+            [→] <Button onClick={showHistoryModal}>ログ</Button>
           </Col>
           <Col>
             <div className="player">
@@ -225,15 +259,18 @@ const LP = () => {
             <ControlPanel
               addLP={(lp: number) => {
                 const to = Math.max(0, playerA.lp + lp);
-                setHistory([
-                  ...history,
-                  {
-                    time: Date.now(),
-                    name: "西",
-                    from: playerA.lp,
-                    to,
-                  },
-                ]);
+                setHistory({
+                  logs: [
+                    ...history.logs.slice(0, history.head + 1),
+                    {
+                      time: Date.now(),
+                      name: "西",
+                      from: playerA.lp,
+                      to,
+                    },
+                  ],
+                  head: history.head + 1,
+                });
                 setPlayerA({ ...playerA, lp: to });
               }}
             ></ControlPanel>
@@ -242,10 +279,13 @@ const LP = () => {
             <ControlPanel
               addLP={(lp: number) => {
                 const to = Math.max(0, playerB.lp + lp);
-                setHistory([
-                  ...history,
-                  { time: Date.now(), name: "東", from: playerB.lp, to },
-                ]);
+                setHistory({
+                  logs: [
+                    ...history.logs.slice(0, history.head + 1),
+                    { time: Date.now(), name: "東", from: playerB.lp, to },
+                  ],
+                  head: history.head + 1,
+                });
                 setPlayerB({ ...playerB, lp: to });
               }}
             ></ControlPanel>
