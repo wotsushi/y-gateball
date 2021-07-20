@@ -227,6 +227,18 @@ const LP = () => {
     }
     setHistory({ ...history, head: history.head - 1 });
   };
+  const redo = () => {
+    if (history.head >= history.logs.length - 1) {
+      return;
+    }
+    const log = history.logs[history.head + 1];
+    if (log.name === "西") {
+      setPlayerA({ ...playerA, lp: log.to });
+    } else {
+      setPlayerB({ ...playerB, lp: log.to });
+    }
+    setHistory({ ...history, head: history.head + 1 });
+  };
   const [NewGameModal, showNewGameModal] = useNewGameModal(newGame);
   const [HistoryModal, showHistoryModal] = useHistoryModal();
 
@@ -244,8 +256,14 @@ const LP = () => {
             <Button onClick={showNewGameModal}>New</Button>{" "}
             <Button onClick={undo} disabled={history.head < 0}>
               Undo
-            </Button>
-            [→] <Button onClick={showHistoryModal}>ログ</Button>
+            </Button>{" "}
+            <Button
+              onClick={redo}
+              disabled={history.head >= history.logs.length - 1}
+            >
+              Redo
+            </Button>{" "}
+            <Button onClick={showHistoryModal}>ログ</Button>
           </Col>
           <Col>
             <div className="player">
