@@ -121,8 +121,9 @@ const useNewGameModal = (
   newGame: () => void
 ): [() => JSX.Element, () => void] => {
   const [showModal, setShowModal] = react.useState(false);
+  const close = () => setShowModal(false);
   const NewGameModal = () => (
-    <Modal show={showModal}>
+    <Modal show={showModal} onHide={close}>
       <Modal.Header>New Game?</Modal.Header>
       <Modal.Body>
         新しいゲームを開始してよろしいですか？
@@ -138,7 +139,7 @@ const useNewGameModal = (
         >
           はい
         </Button>
-        <Button variant="secondary" onClick={() => setShowModal(false)}>
+        <Button variant="secondary" onClick={close}>
           いいえ
         </Button>
       </Modal.Footer>
@@ -153,6 +154,7 @@ const useHistoryModal = (): [
   () => void
 ] => {
   const [showModal, setShowModal] = react.useState(false);
+  const close = () => setShowModal(false);
   const HistoryModal = (props: { history: History }) => {
     const { history } = props;
     const head = history.head;
@@ -184,19 +186,13 @@ const useHistoryModal = (): [
       return logs.slice(head - 5, head + 5);
     })().reverse();
     return (
-      <Modal show={showModal}>
+      <Modal show={showModal} onHide={close}>
         <Modal.Header>ライフポイント変動ログ</Modal.Header>
         <Modal.Body>
           <ListGroup>{visibleLogs}</ListGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            onClick={() => {
-              setShowModal(false);
-            }}
-          >
-            閉じる
-          </Button>
+          <Button onClick={close}>閉じる</Button>
         </Modal.Footer>
       </Modal>
     );
