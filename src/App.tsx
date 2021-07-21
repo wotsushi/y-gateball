@@ -6,7 +6,7 @@ import MonsterTable from "./Monster";
 import SpellTable from "./Spell";
 import TrapTable from "./Trap";
 import Rule from "./Rule";
-import FAQ from "./FAQ";
+import FAQList from "./FAQ";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
   return (
     <Router basename={base}>
       <div className="App">
-        <Navbar bg="light" expand>
+        <Navbar bg="light" expand sticky="top">
           <Navbar.Brand as={Link} to="/">
             04環境
           </Navbar.Brand>
@@ -56,7 +56,7 @@ function App() {
             <Rule />
           </Route>
           <Route path="/faq">
-            <FAQ />
+            <FAQList />
           </Route>
         </Switch>
       </div>
