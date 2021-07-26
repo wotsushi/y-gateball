@@ -33,6 +33,7 @@ const lifeValues = [
   [-600, -800, -1000],
   [-2000, -3000, 1000],
 ];
+const playerName = ["西", "東"];
 type Turn = "先攻" | "後攻";
 interface Player {
   lp: number;
@@ -40,7 +41,7 @@ interface Player {
 }
 interface LPLog {
   time: number;
-  name: string;
+  playerID: number;
   from: number;
   to: number;
 }
@@ -109,8 +110,7 @@ const ControlPanel = (props: { addLP: (lp: number) => void }) => {
 
 const players = initPlayers();
 const { useGlobalState } = createGlobalState({
-  playerA: players[0],
-  playerB: players[1],
+  players: players,
   history: {
     logs: [],
     head: -1,
@@ -159,10 +159,10 @@ const useHistoryModal = (): [
     const { history } = props;
     const head = history.head;
     const now = Date.now();
-    const logs = history.logs.map(({ time, name, from, to }, i) => {
+    const logs = history.logs.map(({ time, playerID, from, to }, i) => {
       return (
         <ListGroup.Item variant={i === head ? "dark" : ""}>
-          {formatTime(now - time)}前: {name} {from} → {to} (
+          {formatTime(now - time)}前: {playerName[playerID]} {from} → {to} (
           {toStringWithSign(to - from)})
         </ListGroup.Item>
       );
@@ -202,13 +202,11 @@ const useHistoryModal = (): [
 };
 
 const LP = () => {
-  const [playerA, setPlayerA] = useGlobalState("playerA");
-  const [playerB, setPlayerB] = useGlobalState("playerB");
+  const [players, setPlayers] = useGlobalState("players");
   const [history, setHistory] = useGlobalState("history");
   const newGame = () => {
     const newPlayers = initPlayers();
-    setPlayerA(newPlayers[0]);
-    setPlayerB(newPlayers[1]);
+    setPlayers(newPlayers);
     setHistory({ logs: [], head: -1 });
   };
   const undo = () => {
@@ -216,11 +214,14 @@ const LP = () => {
       return;
     }
     const log = history.logs[history.head];
-    if (log.name === "西") {
-      setPlayerA({ ...playerA, lp: log.from });
-    } else {
-      setPlayerB({ ...playerB, lp: log.from });
-    }
+    setPlayers(
+      players.map((player, i) => {
+        if (i === log.playerID) {
+          return { ...player, lp: log.from };
+        }
+        return player;
+      })
+    );
     setHistory({ ...history, head: history.head - 1 });
   };
   const redo = () => {
@@ -228,11 +229,14 @@ const LP = () => {
       return;
     }
     const log = history.logs[history.head + 1];
-    if (log.name === "西") {
-      setPlayerA({ ...playerA, lp: log.to });
-    } else {
-      setPlayerB({ ...playerB, lp: log.to });
-    }
+    setPlayers(
+      players.map((player, i) => {
+        if (i === log.playerID) {
+          return { ...player, lp: log.to };
+        }
+        return player;
+      })
+    );
     setHistory({ ...history, head: history.head + 1 });
   };
   const [NewGameModal, showNewGameModal] = useNewGameModal(newGame);
@@ -242,12 +246,6 @@ const LP = () => {
     <>
       <Container>
         <Row>
-          <Col>
-            <div className="player">
-              <LifePoint name="西" lp={playerA.lp}></LifePoint>
-              <div>{playerA.turn}</div>
-            </div>
-          </Col>
           <Col>
             <Button onClick={showNewGameModal}>New</Button>{" "}
             <Button onClick={undo} disabled={history.head < 0}>
@@ -261,49 +259,53 @@ const LP = () => {
             </Button>{" "}
             <Button onClick={showHistoryModal}>ログ</Button>
           </Col>
+        </Row>
+        <Row>
           <Col>
             <div className="player">
-              <div>{playerB.turn}</div>
-              <LifePoint name="東" lp={playerB.lp}></LifePoint>
+              <LifePoint name={playerName[0]} lp={players[0].lp}></LifePoint>
+              <div>{players[0].turn}</div>
+            </div>
+          </Col>
+          <Col>
+            <div className="player">
+              <div>{players[1].turn}</div>
+              <LifePoint name={playerName[1]} lp={players[1].lp}></LifePoint>
             </div>
           </Col>
         </Row>
         <Row>
-          <Col>
-            <ControlPanel
-              addLP={(lp: number) => {
-                const to = Math.max(0, playerA.lp + lp);
-                setHistory({
-                  logs: [
-                    ...history.logs.slice(0, history.head + 1),
-                    {
-                      time: Date.now(),
-                      name: "西",
-                      from: playerA.lp,
-                      to,
-                    },
-                  ],
-                  head: history.head + 1,
-                });
-                setPlayerA({ ...playerA, lp: to });
-              }}
-            ></ControlPanel>
-          </Col>
-          <Col>
-            <ControlPanel
-              addLP={(lp: number) => {
-                const to = Math.max(0, playerB.lp + lp);
-                setHistory({
-                  logs: [
-                    ...history.logs.slice(0, history.head + 1),
-                    { time: Date.now(), name: "東", from: playerB.lp, to },
-                  ],
-                  head: history.head + 1,
-                });
-                setPlayerB({ ...playerB, lp: to });
-              }}
-            ></ControlPanel>
-          </Col>
+          {players.map((player, i) => {
+            return (
+              <Col>
+                <ControlPanel
+                  addLP={(lp: number) => {
+                    const to = Math.max(0, player.lp + lp);
+                    setHistory({
+                      logs: [
+                        ...history.logs.slice(0, history.head + 1),
+                        {
+                          time: Date.now(),
+                          playerID: i,
+                          from: player.lp,
+                          to,
+                        },
+                      ],
+                      head: history.head + 1,
+                    });
+                    setPlayers(
+                      players.map((player, j) => {
+                        if (j === i) {
+                          return { ...player, lp: to };
+                        }
+                        return player;
+                      })
+                    );
+                  }}
+                ></ControlPanel>
+              </Col>
+            );
+          })}
         </Row>
       </Container>
       <NewGameModal />
