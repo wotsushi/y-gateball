@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/y-gateball/static/css/main.55679614.chunk.css",
-    "main.js": "/y-gateball/static/js/main.8284ff47.chunk.js",
-    "main.js.map": "/y-gateball/static/js/main.8284ff47.chunk.js.map",
+    "main.css": "/y-gateball/static/css/main.2df0c3e4.chunk.css",
+    "main.js": "/y-gateball/static/js/main.c083efe2.chunk.js",
+    "main.js.map": "/y-gateball/static/js/main.c083efe2.chunk.js.map",
     "runtime-main.js": "/y-gateball/static/js/runtime-main.2e4a0083.js",
     "runtime-main.js.map": "/y-gateball/static/js/runtime-main.2e4a0083.js.map",
     "static/css/2.150d169a.chunk.css": "/y-gateball/static/css/2.150d169a.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.4d8f9bef.chunk.js.map": "/y-gateball/static/js/3.4d8f9bef.chunk.js.map",
     "index.html": "/y-gateball/index.html",
     "static/css/2.150d169a.chunk.css.map": "/y-gateball/static/css/2.150d169a.chunk.css.map",
-    "static/css/main.55679614.chunk.css.map": "/y-gateball/static/css/main.55679614.chunk.css.map",
+    "static/css/main.2df0c3e4.chunk.css.map": "/y-gateball/static/css/main.2df0c3e4.chunk.css.map",
     "static/js/2.1b0c31e6.chunk.js.LICENSE.txt": "/y-gateball/static/js/2.1b0c31e6.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2e4a0083.js",
     "static/css/2.150d169a.chunk.css",
     "static/js/2.1b0c31e6.chunk.js",
-    "static/css/main.55679614.chunk.css",
-    "static/js/main.8284ff47.chunk.js"
+    "static/css/main.2df0c3e4.chunk.css",
+    "static/js/main.c083efe2.chunk.js"
   ]
 }
