@@ -275,7 +275,7 @@ const FAQList = () => {
     <>
       {faqs.map((faq) => (
         <>
-          <h2 id={faq.name}>{faq.name}</h2>
+          <h2 id={faq.name}>《{faq.name}》</h2>
           {faq.qas.map(([q, a]) => (
             <p>
               Q: {q} <br />
