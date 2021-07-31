@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Container,
   Col,
@@ -51,6 +52,8 @@ interface History {
   head: number;
 }
 
+type Result = "Win" | "Lose" | "Draw";
+
 const initPlayers = () => {
   const turns = Math.random() > 0.5 ? ["先攻", "後攻"] : ["後攻", "先攻"];
   return turns.map((turn) => {
@@ -61,8 +64,13 @@ const initPlayers = () => {
   });
 };
 
-const LifePoint = (props: { name: string; lp: number }) => {
-  const { name, lp } = props;
+const LifePoint = (props: {
+  name: string;
+  turn: string;
+  result: Result | null;
+  lp: number;
+}) => {
+  const { name, turn, result, lp } = props;
   const now = Math.floor(lp / 80);
   const variant = (() => {
     if (lp > 4000) {
@@ -73,9 +81,34 @@ const LifePoint = (props: { name: string; lp: number }) => {
       return "danger";
     }
   })();
+  const badge = (() => {
+    if (result === "Win") {
+      return (
+        <Badge pill variant="info">
+          W
+        </Badge>
+      );
+    } else if (result === "Lose") {
+      return (
+        <Badge pill variant="dark">
+          L
+        </Badge>
+      );
+    } else if (result === "Draw") {
+      return (
+        <Badge pill variant="warning">
+          D
+        </Badge>
+      );
+    } else {
+      return null;
+    }
+  })();
   return (
     <div className="lp-parent bg-light text-black">
-      <div className="lp-header">{name}</div>
+      <div className="lp-header">
+        {name}（{turn}）{badge}
+      </div>
       <ProgressBar variant={variant} now={now}></ProgressBar>
       <div className="lp">{props.lp}</div>
     </div>
@@ -115,6 +148,8 @@ const { useGlobalState } = createGlobalState({
     logs: [],
     head: -1,
   } as History,
+  // 引き分けの場合は-1, 初戦が終了していない場合はnull
+  firstDuelWinnerID: null as number | null,
 });
 
 const useNewGameModal = (
@@ -204,10 +239,13 @@ const useHistoryModal = (): [
 const LP = () => {
   const [players, setPlayers] = useGlobalState("players");
   const [history, setHistory] = useGlobalState("history");
+  const [firstDuelWinnerID, setFirstDuelWinnerID] =
+    useGlobalState("firstDuelWinnerID");
   const newGame = () => {
     const newPlayers = initPlayers();
     setPlayers(newPlayers);
     setHistory({ logs: [], head: -1 });
+    setFirstDuelWinnerID(null);
   };
   const undo = () => {
     if (history.head < 0) {
@@ -241,6 +279,63 @@ const LP = () => {
   };
   const [NewGameModal, showNewGameModal] = useNewGameModal(newGame);
   const [HistoryModal, showHistoryModal] = useHistoryModal();
+  const addLP = (i: number) => (lp: number) => {
+    const player = players[i];
+    const to = Math.max(0, player.lp + lp);
+    setHistory({
+      logs: [
+        ...history.logs.slice(0, history.head + 1),
+        {
+          time: Date.now(),
+          playerID: i,
+          from: player.lp,
+          to,
+        },
+      ],
+      head: history.head + 1,
+    });
+    setPlayers(
+      players.map((player, j) => {
+        if (j === i) {
+          return { ...player, lp: to };
+        }
+        return player;
+      })
+    );
+  };
+  const nextDuel = () => {
+    setFirstDuelWinnerID(() => {
+      if (players[0].lp === 0 && players[1].lp === 0) {
+        return -1;
+      } else if (players[0].lp === 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    setHistory({ logs: [], head: -1 });
+    setPlayers([
+      {
+        lp: 8000,
+        turn: players[1].turn,
+      },
+      {
+        lp: 8000,
+        turn: players[0].turn,
+      },
+    ]);
+  };
+  const results = players.map((_, i): Result | null => {
+    if (firstDuelWinnerID === null) {
+      return null;
+    } else if (i === firstDuelWinnerID) {
+      return "Win";
+    } else if (firstDuelWinnerID === -1) {
+      return "Draw";
+    } else {
+      return "Lose";
+    }
+  });
 
   return (
     <>
@@ -248,6 +343,15 @@ const LP = () => {
         <Row>
           <Col>
             <Button onClick={showNewGameModal}>New</Button>{" "}
+            <Button
+              onClick={nextDuel}
+              disabled={
+                firstDuelWinnerID !== null ||
+                players.every((player) => player.lp > 0)
+              }
+            >
+              Next Duel
+            </Button>{" "}
             <Button onClick={undo} disabled={history.head < 0}>
               Undo
             </Button>{" "}
@@ -263,46 +367,30 @@ const LP = () => {
         <Row>
           <Col>
             <div className="player">
-              <LifePoint name={playerName[0]} lp={players[0].lp}></LifePoint>
-              <div>{players[0].turn}</div>
+              <LifePoint
+                name={playerName[0]}
+                turn={players[0].turn}
+                result={results[0]}
+                lp={players[0].lp}
+              ></LifePoint>
             </div>
           </Col>
-          <Col>
+          <Col style={{ float: "right" }}>
             <div className="player">
-              <div>{players[1].turn}</div>
-              <LifePoint name={playerName[1]} lp={players[1].lp}></LifePoint>
+              <LifePoint
+                name={playerName[1]}
+                turn={players[1].turn}
+                result={results[1]}
+                lp={players[1].lp}
+              ></LifePoint>
             </div>
           </Col>
         </Row>
         <Row>
-          {players.map((player, i) => {
+          {players.map((_, i) => {
             return (
               <Col>
-                <ControlPanel
-                  addLP={(lp: number) => {
-                    const to = Math.max(0, player.lp + lp);
-                    setHistory({
-                      logs: [
-                        ...history.logs.slice(0, history.head + 1),
-                        {
-                          time: Date.now(),
-                          playerID: i,
-                          from: player.lp,
-                          to,
-                        },
-                      ],
-                      head: history.head + 1,
-                    });
-                    setPlayers(
-                      players.map((player, j) => {
-                        if (j === i) {
-                          return { ...player, lp: to };
-                        }
-                        return player;
-                      })
-                    );
-                  }}
-                ></ControlPanel>
+                <ControlPanel addLP={addLP(i)}></ControlPanel>
               </Col>
             );
           })}
