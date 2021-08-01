@@ -31,8 +31,9 @@ const formatTime = (ms: number) => {
 const lifeValues = [
   [-50, -100, -200],
   [-300, -400, -500],
-  [-600, -800, -1000],
-  [-2000, -3000, 1000],
+  [-600, -800, -900],
+  [-1000, -2000, -3000],
+  [1000],
 ];
 const playerName = ["西", "東"];
 type Turn = "先攻" | "後攻";
@@ -120,13 +121,13 @@ const ControlPanel = (props: { addLP: (lp: number) => void }) => {
     <Container>
       {lifeValues.map((row) => {
         return (
-          <Row style={{ padding: 10 }}>
+          <Row style={{ padding: 15 }}>
             {row.map((val) => {
               return (
                 <Col>
                   <Button
-                    variant="outline-dark"
-                    style={{ width: "100px", height: "50px" }}
+                    variant="outline-secondary"
+                    style={{ width: "100px", height: "60px" }}
                     onClick={() => props.addLP(val)}
                   >
                     {toStringWithSign(val)}
