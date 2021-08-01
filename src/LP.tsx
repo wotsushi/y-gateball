@@ -127,7 +127,10 @@ const ControlPanel = (props: { addLP: (lp: number) => void }) => {
                 <Col>
                   <Button
                     variant="outline-secondary"
-                    style={{ width: "100px", height: "60px" }}
+                    style={{
+                      width: "100px",
+                      height: "60px",
+                    }}
                     onClick={() => props.addLP(val)}
                   >
                     {toStringWithSign(val)}
@@ -223,13 +226,10 @@ const useHistoryModal = (): [
     })().reverse();
     return (
       <Modal show={showModal} onHide={close}>
-        <Modal.Header>ライフポイント変動ログ</Modal.Header>
+        <Modal.Header closeButton>ライフポイント変動ログ</Modal.Header>
         <Modal.Body>
           <ListGroup>{visibleLogs}</ListGroup>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={close}>閉じる</Button>
-        </Modal.Footer>
       </Modal>
     );
   };
