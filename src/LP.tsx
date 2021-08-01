@@ -35,7 +35,7 @@ const lifeValues = [
   [-1000, -2000, -3000],
   [1000],
 ];
-const playerName = ["西", "東"];
+const playerName = ["光", "闇"];
 type Turn = "先攻" | "後攻";
 interface Player {
   lp: number;
@@ -376,7 +376,7 @@ const LP = () => {
               ></LifePoint>
             </div>
           </Col>
-          <Col style={{ float: "right" }}>
+          <Col md={{ offset: 6 }}>
             <div className="player">
               <LifePoint
                 name={playerName[1]}
