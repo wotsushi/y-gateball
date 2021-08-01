@@ -10,6 +10,11 @@ import {
 } from "react-bootstrap";
 import react from "react";
 import { createGlobalState } from "react-hooks-global-state";
+import {
+  BsFillCaretLeftFill,
+  BsFillCaretRightFill,
+  BsList,
+} from "react-icons/bs";
 
 const toStringWithSign = (x: number) => {
   if (x > 0) {
@@ -343,8 +348,8 @@ const LP = () => {
       <Container>
         <Row>
           <Col>
-            <Button onClick={showNewGameModal}>New</Button>{" "}
             <Button
+              className="toolbar"
               onClick={nextDuel}
               disabled={
                 firstDuelWinnerID !== null ||
@@ -352,17 +357,37 @@ const LP = () => {
               }
             >
               Next Duel
-            </Button>{" "}
-            <Button onClick={undo} disabled={history.head < 0}>
-              Undo
-            </Button>{" "}
+            </Button>
             <Button
+              className="toolbar"
+              variant="outline-secondary"
+              onClick={undo}
+              disabled={history.head < 0}
+            >
+              <BsFillCaretLeftFill />
+            </Button>
+            <Button
+              className="toolbar"
+              variant="outline-secondary"
               onClick={redo}
               disabled={history.head >= history.logs.length - 1}
             >
-              Redo
-            </Button>{" "}
-            <Button onClick={showHistoryModal}>ログ</Button>
+              <BsFillCaretRightFill />
+            </Button>
+            <Button
+              className="toolbar"
+              variant="outline-secondary"
+              onClick={showHistoryModal}
+            >
+              <BsList />
+            </Button>
+            <Button
+              className="toolbar"
+              variant="secondary"
+              onClick={showNewGameModal}
+            >
+              New
+            </Button>
           </Col>
         </Row>
         <Row>
