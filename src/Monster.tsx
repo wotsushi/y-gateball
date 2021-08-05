@@ -112,15 +112,6 @@ const data: Monster[] = [
     num: 1,
   },
   {
-    name: "ならず者傭兵部隊",
-    lv: 4,
-    attribute: "地",
-    type: "戦士",
-    atk: 1000,
-    def: 1000,
-    num: 1,
-  },
-  {
     name: "異次元の女戦士",
     lv: 4,
     attribute: "光",
@@ -128,6 +119,15 @@ const data: Monster[] = [
     atk: 1500,
     def: 1600,
     num: 3,
+  },
+  {
+    name: "ならず者傭兵部隊",
+    lv: 4,
+    attribute: "地",
+    type: "戦士",
+    atk: 1000,
+    def: 1000,
+    num: 1,
   },
   {
     name: "首領・ザルーグ",
