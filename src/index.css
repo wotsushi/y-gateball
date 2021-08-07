@@ -84,3 +84,16 @@ h2 {
 p {
   margin-left: 0.5em;
 }
+
+ul {
+  padding: 0.5em 0.5em 0.5em 2em;
+  max-width: 90%;
+}
+
+ul li {
+  padding: 0.2em 0;
+}
+
+ul li li {
+  padding: 0.1em 0;
+}
