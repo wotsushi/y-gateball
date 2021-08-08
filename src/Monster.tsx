@@ -26,6 +26,7 @@ type Type =
 
 interface Monster {
   name: string;
+  shorthand?: string;
   lv: number;
   attribute: Attribute;
   type: Type;
@@ -38,6 +39,7 @@ interface Monster {
 const data: Monster[] = [
   {
     name: "カオス・ソルジャー －開闢の使者－",
+    shorthand: "開闢",
     lv: 8,
     attribute: "光",
     type: "戦士",
@@ -47,6 +49,7 @@ const data: Monster[] = [
   },
   {
     name: "人造人間－サイコ・ショッカー",
+    shorthand: "ショッカー",
     lv: 6,
     attribute: "闇",
     type: "機械",
@@ -65,6 +68,7 @@ const data: Monster[] = [
   },
   {
     name: "イグザリオン・ユニバース",
+    shorthand: "イグザリオン",
     lv: 4,
     attribute: "闇",
     type: "獣戦士",

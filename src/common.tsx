@@ -1,4 +1,5 @@
 import { HashLink as Link } from "react-router-hash-link";
+import { isMobileOnly } from "react-device-detect";
 
 const Encoding = require("encoding-japanese");
 
@@ -9,7 +10,7 @@ const scrollWithOffset = (el: HTMLElement) => {
   window.scrollTo({ top: yCoordinate + yOffset, behavior: "smooth" });
 };
 
-export const linkName = (name: string) => {
+export const linkName = (name: string, card: { shorthand: string }) => {
   const nameWithBrackets = `《${name}》`;
   const unicodeArray = nameWithBrackets
     .split("")
@@ -23,7 +24,7 @@ export const linkName = (name: string) => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        {name}
+        {isMobileOnly && card.shorthand ? card.shorthand : name}
       </a>
       <span style={{ float: "right" }}>
         <Link to={`/faq#${name}`} scroll={scrollWithOffset}>
