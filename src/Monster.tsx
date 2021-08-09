@@ -1,4 +1,6 @@
 import BootstrapTable from "react-bootstrap-table-next";
+import { isMobileOnly } from "react-device-detect";
+
 import { linkName } from "./common";
 
 type Attribute = "闇" | "光" | "地" | "水" | "炎" | "風";
@@ -238,12 +240,42 @@ const columns = [
   },
 ];
 
+const columnsMobile = [
+  {
+    text: "カード名",
+    dataField: "name",
+    formatter: linkName,
+  },
+  {
+    text: "攻撃力",
+    dataField: "atk",
+    sort: true,
+  },
+  {
+    text: "効果攻撃力",
+    dataField: "effect_atk",
+    formatter: effectATK,
+    sort: true,
+    sortValue: effectATK,
+  },
+  {
+    text: "守備力",
+    dataField: "def",
+    sort: true,
+  },
+  {
+    text: "枚数",
+    dataField: "num",
+    sort: true,
+  },
+];
+
 const MonsterTable = () => (
   <BootstrapTable
     bootstrap4
     keyField="name"
     data={data}
-    columns={columns}
+    columns={isMobileOnly ? columnsMobile : columns}
     defaultSorted={[{ dataField: "atk", order: "desc" }]}
   ></BootstrapTable>
 );
