@@ -210,45 +210,27 @@ const faqs: FAQ[] = [
   },
   {
     name: "聖なる魔術師",
-    qas: [
-      ["hoge", "huga"],
-      ["seyana", "sorena"],
-    ],
+    qas: [],
   },
   {
     name: "キラー・スネーク",
-    qas: [
-      ["hoge", "huga"],
-      ["seyana", "sorena"],
-    ],
+    qas: [],
   },
   {
     name: "押収",
-    qas: [
-      ["hoge", "huga"],
-      ["seyana", "sorena"],
-    ],
+    qas: [],
   },
   {
     name: "強引な番兵",
-    qas: [
-      ["hoge", "huga"],
-      ["seyana", "sorena"],
-    ],
+    qas: [],
   },
   {
     name: "強欲な壺",
-    qas: [
-      ["hoge", "huga"],
-      ["seyana", "sorena"],
-    ],
+    qas: [],
   },
   {
     name: "苦渋の選択",
-    qas: [
-      ["hoge", "huga"],
-      ["seyana", "sorena"],
-    ],
+    qas: [],
   },
   {
     name: "心変わり",
@@ -259,10 +241,7 @@ const faqs: FAQ[] = [
   },
   {
     name: "大嵐",
-    qas: [
-      ["hoge", "huga"],
-      ["seyana", "sorena"],
-    ],
+    qas: [],
   },
   {
     name: "ライトニング・ボルテックス",
