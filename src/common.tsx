@@ -1,5 +1,6 @@
 import { HashLink as Link } from "react-router-hash-link";
 import { isMobileOnly } from "react-device-detect";
+import { Badge } from "react-bootstrap";
 
 const Encoding = require("encoding-japanese");
 
@@ -28,8 +29,7 @@ export const linkName = (name: string, card: { shorthand: string }) => {
       </a>
       <span style={{ float: "right" }}>
         <Link to={`/faq#${name}`} scroll={scrollWithOffset}>
-          {" "}
-          FAQ
+          <Badge variant="secondary">FAQ</Badge>
         </Link>
       </span>
     </>
