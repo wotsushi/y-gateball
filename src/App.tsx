@@ -1,4 +1,3 @@
-import "./App.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import LP from "./LP";
