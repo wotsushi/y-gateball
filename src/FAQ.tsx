@@ -442,11 +442,11 @@ const faqs: FAQ[] = [
 const FAQList = () => {
   return (
     <>
-      {faqs.map((faq) => (
-        <div className="faq">
+      {faqs.map((faq, i) => (
+        <div className="faq" key={i}>
           <h2 id={faq.name}>《{faq.name}》</h2>
-          {faq.qas.map(([q, a]) => (
-            <p>
+          {faq.qas.map(([q, a], j) => (
+            <p key={j}>
               Q: {q} <br />
               A: {a}
             </p>

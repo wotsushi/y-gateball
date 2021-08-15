@@ -125,12 +125,12 @@ const LifePoint = (props: {
 const ControlPanel = (props: { addLP: (lp: number) => void }) => {
   return (
     <Container>
-      {lifeValues.map((row) => {
+      {lifeValues.map((row, i) => {
         return (
-          <Row style={{ padding: 15 }}>
-            {row.map((val) => {
+          <Row style={{ padding: 15 }} key={i}>
+            {row.map((val, j) => {
               return (
-                <Col>
+                <Col key={j}>
                   <Button
                     variant="outline-secondary"
                     style={{
@@ -206,7 +206,7 @@ const useHistoryModal = (): [
     const now = Date.now();
     const logs = history.logs.map(({ time, playerID, from, to }, i) => {
       return (
-        <ListGroup.Item variant={i === head ? "dark" : ""}>
+        <ListGroup.Item variant={i === head ? "dark" : ""} key={i}>
           {formatTime(now - time)}前: {playerName[playerID]} {from} → {to} (
           {toStringWithSign(to - from)})
         </ListGroup.Item>
@@ -416,8 +416,8 @@ const LP = () => {
         <Row>
           {players.map((_, i) => {
             return (
-              <Col>
-                <ControlPanel addLP={addLP(i)}></ControlPanel>
+              <Col key={i}>
+                <ControlPanel addLP={addLP(i)} />
               </Col>
             );
           })}
