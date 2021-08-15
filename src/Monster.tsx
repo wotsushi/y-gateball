@@ -2,6 +2,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { isMobileOnly } from "react-device-detect";
 
 import { linkName } from "./common";
+import "./Monster.scss";
 
 type Attribute = "闇" | "光" | "地" | "水" | "炎" | "風";
 type Type =
@@ -271,13 +272,15 @@ const columnsMobile = [
 ];
 
 const MonsterTable = () => (
-  <BootstrapTable
-    bootstrap4
-    keyField="name"
-    data={data}
-    columns={isMobileOnly ? columnsMobile : columns}
-    defaultSorted={[{ dataField: "atk", order: "desc" }]}
-  ></BootstrapTable>
+  <div className="monster-table">
+    <BootstrapTable
+      bootstrap4
+      keyField="name"
+      data={data}
+      columns={isMobileOnly ? columnsMobile : columns}
+      defaultSorted={[{ dataField: "atk", order: "desc" }]}
+    ></BootstrapTable>
+  </div>
 );
 
 export default MonsterTable;

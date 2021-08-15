@@ -56,7 +56,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react-bootstrap-table-next": "^4.0.14"
+    "@types/react-bootstrap-table-next": "^4.0.14",
+    "sass": "^1.37.5"
   },
   "homepage": "https://wotsushi.github.io/y-gateball/"
 }

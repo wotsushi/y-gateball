@@ -1,7 +1,10 @@
+import "./FAQ.scss";
+
 interface FAQ {
   name: string;
   qas: [string, string][];
 }
+
 const faqs: FAQ[] = [
   {
     name: "カオス・ソルジャー －開闢の使者－",
@@ -440,7 +443,7 @@ const FAQList = () => {
   return (
     <>
       {faqs.map((faq) => (
-        <>
+        <div className="faq">
           <h2 id={faq.name}>《{faq.name}》</h2>
           {faq.qas.map(([q, a]) => (
             <p>
@@ -448,7 +451,7 @@ const FAQList = () => {
               A: {a}
             </p>
           ))}
-        </>
+        </div>
       ))}
     </>
   );

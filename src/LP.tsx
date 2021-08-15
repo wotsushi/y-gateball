@@ -15,6 +15,7 @@ import {
   BsFillCaretRightFill,
   BsList,
 } from "react-icons/bs";
+import "./LP.scss";
 
 const toStringWithSign = (x: number) => {
   if (x > 0) {
